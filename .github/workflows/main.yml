@@ -1,36 +1,34 @@
-name: Build Flutter PWA
-
+name: Flutter Web
 on:
   push:
-    branches: 
+    branches:
       - source
-
 jobs:
   build:
     name: Build Web
-    
     env:
       my_secret: ${{secrets.commit_secret}}
-
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v1
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: 'beta'
-    - run: flutter config --enable-web
-    - run: flutter pub get
-    - run: flutter build web --release
-    - run: |
-        cd build/web
-        git init
-        # git config --global user.email kriengkrai.born@gmail.com
-        # git config --global user.name taffyCouple63
-        git status
-        # ENTER YOUR ACCOUNT NAME IN THE GITHUB REMOTE URL
-        # git remote add origin https://${{secrets.commit_secret}}@github.com/taffyCouple63/taffyCouple63.github.io.git
-        git checkout -b master
-        git add --all
-        git commit -m "update website"
-        git push origin master -f
+      - uses: actions/checkout@v1
+      - uses: subosito/flutter-action@v1
+        with:
+          channel: 'dev'
+      - run: flutter config --enable-web
+      - run: flutter pub get
+      - run: flutter build web --release
+      - run: |
+          cd build/web
+          git init
+          # type configurations: your user.email and user.name followed lines 
+          # git config --global user.email your_email 
+          # git config --global user.name your_name 
+          git config --global user.email kriengkrai.born@gmail.com
+          git config --global user.name taffycouple63
+          git status
+          # change this remote url for examle your remote url is https://github.com/onatcipli/flutter_web.git then the following:
+          git remote add origin https://${{secrets.commit_secret}}@github.com/taffycouple63/taffycouple63.git
+          git checkout -b gh-pages
+          git add --all
+          git commit -m "update"
+          git push origin gh-pages -f
